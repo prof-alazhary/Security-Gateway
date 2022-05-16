@@ -6,9 +6,9 @@ services:
   security_gateway:
     # restart: always
     build:
-      dockerfile: Dockerfile
+      dockerfile: nginx/Dockerfile
       # dockerfile: Dockerfile.dev
-      context: ./security_gateway/nginx
+      context: ./security_gateway
     ports:
       - "8086:8086"
     # command: [ nginx-debug, '-g', 'daemon off;' ]

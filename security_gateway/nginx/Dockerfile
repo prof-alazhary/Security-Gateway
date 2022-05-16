@@ -20,7 +20,7 @@ RUN hg clone http://hg.nginx.org/njs \
 
 # install nginx 
 RUN cd /home/nginx/nginx-1.21.6 \
-    && ./configure --sbin-path=/usr/bin/nginx --with-debug --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-pcre --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_auth_request_module --modules-path=/usr/local/nginx/modules --with-http_v2_module --add-module=/home/nginx/njs/nginx \
+    && ./configure --sbin-path=/usr/bin/nginx --with-debug --conf-path=/etc/nginx/conf.d/default.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-pcre --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_auth_request_module --modules-path=/usr/local/nginx/modules --with-http_v2_module --add-module=/home/nginx/njs/nginx \
     && make \
     && make install \
     && which nginx
@@ -34,8 +34,8 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 EXPOSE 80
 
 # ========================================YOUR SETUP STARTS FROM HERE==============================================#
-# copy nginx.conf
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY jsCode.js /etc/nginx/jsCode.js
+
+COPY nginx/default.conf /etc/nginx/conf.d/.
+COPY nginx/jsCode.js /etc/nginx/conf.d/.
 
 CMD ["nginx", "-g", "daemon off;"]
