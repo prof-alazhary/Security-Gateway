@@ -6,6 +6,24 @@ function logsFormate(r) {
     return log;
 }
 
+function my_func(r) {
+    r.log('inside my_func-->')
+    r.log(`uri is : ${r.uri}`)
+    r.log(`r.variables.request_uri is : ${r.variables.request_uri}`)
+    r.log(`r.variables.args is : ${r.variables.args}`)
+    r.subrequest("/my_func", { method: "POST" },
+        function (reply) {
+            var status = reply.status;
+            r.log(`status is ${status}`)
+            if (status) {
+                r.return(status, reply.responseBody);//reply.responseBody
+            } else {
+                r.return(401);
+            }
+        }
+    );
+}
+
 function test(r) {
     r.log(`test test test test`)
     Object.keys(r).forEach(key => {
@@ -17,4 +35,4 @@ function test(r) {
     r.return(400, req_body);
 }
 
-export default { logsFormate, test }
+export default { logsFormate, test, my_func }
