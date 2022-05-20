@@ -19,11 +19,16 @@ function parseCookiesToJSON(cookies) {
 }
 
 function covertTokenToCookie(r) {
-    r.subrequest("/token_proxy", { method: "POST" },
+    r.log('---inside covertTokenToCookie||||----')
+    r.log(`uri is : ${r.uri}`)
+    r.log(`r.variables.request_uri is : ${r.variables.request_uri}`)
+    r.log(`r.variables.args is : ${r.variables.args}`)
+
+    r.subrequest("/token_proxy", { method: "POST", args: r.variables.args },
         function (reply) {
             var status = reply.status;
+            r.log(`status is ${status}`)
             if (status) {
-                r.log('---debugging||||----')
                 ngx.log(ngx.INFO, reply.responseBody)
                 var response = JSON.parse(reply.responseBody);
                 var cookies = [];
