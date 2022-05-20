@@ -17,11 +17,11 @@ services:
   apix_server:
     # restart: always
     build:
-      # dockerfile: Dockerfile
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
+      # dockerfile: Dockerfile.dev
       context: ./apix_server/nginx
     ports:
       - "8087:8087"
-    command: [ nginx-debug, '-g', 'daemon off;' ]
+    # command: [ nginx-debug, '-g', 'daemon off;' ]
     networks:
       - vf-uk-configuration-portal
