@@ -24,7 +24,7 @@ We will explain the `token/Cookie` exchange process through the security gateway
 
 > covertTokenToCookie
 
-By the Postman App, you can perform the folloeing API call :-
+By the Postman App, you can perform the following API call :-
 ```
 POST localhost:8086/token
 ```
@@ -70,7 +70,7 @@ function covertTokenToCookie(r) {
 -------------
 > covertCookieToToken
 
-By the Postman App, you can perform the folloeing API call :-
+By the Postman App, you can perform the following API call :-
 ```
 POST localhost:8086/agent_token
 ```
