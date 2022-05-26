@@ -24,6 +24,11 @@ We will explain the `token/Cookie` exchange process through the security gateway
 
 > covertTokenToCookie
 
+By the Postman App, you can perform the folloeing API call :-
+```
+POST localhost:8086/token
+```
+
 nginx.conf:
 ```config
         location /token{
@@ -64,6 +69,11 @@ function covertTokenToCookie(r) {
 ```
 -------------
 > covertCookieToToken
+
+By the Postman App, you can perform the folloeing API call :-
+```
+POST localhost:8086/agent_token
+```
 
 Here we will explain the opposite of the prev. example.
 nginx.conf:
