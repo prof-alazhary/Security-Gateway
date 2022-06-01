@@ -6,12 +6,15 @@ function logsFormate(r) {
     return log;
 }
 
-function my_func(r) {
-    r.log('inside my_func-->')
+function middleware(r) {
+    r.log('inside middleware-->')
     r.log(`uri is : ${r.uri}`)
     r.log(`r.variables.request_uri is : ${r.variables.request_uri}`)
     r.log(`r.variables.args is : ${r.variables.args}`)
-    r.subrequest("/my_func", { method: "POST" },
+    const body = r.requestBody;
+    r.log(`r.requestBody is : ${body}`)
+
+    r.subrequest("/real_agent_token", { method: "POST", body },
         function (reply) {
             var status = reply.status;
             r.log(`status is ${status}`)
@@ -35,4 +38,4 @@ function test(r) {
     r.return(400, req_body);
 }
 
-export default { logsFormate, test, my_func }
+export default { logsFormate, test, middleware }
