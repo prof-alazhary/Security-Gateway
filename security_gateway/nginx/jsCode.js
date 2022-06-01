@@ -33,7 +33,7 @@ function covertTokenToCookie(r) {
             if (status) {
                 ngx.log(ngx.INFO, reply.responseBody)
                 var response = JSON.parse(reply.responseBody);
-                var cookies = [];
+                const cookies = [];
                 Object.keys(response).forEach(key => {
                     cookies.push(`${key}=${response[key]}; HttpOnly`);
                 })
@@ -54,7 +54,17 @@ function covertCookieToToken(r) {
         r.log(`body is --->${typeof body} , ${body}`);
         r.subrequest("/agent_token_proxy", { method: "POST", body }, function (reply) {
             var status = reply.status;
-            r.return(status, reply.responseBody);
+
+            //start converting the response To Cookies...
+            var response = JSON.parse(reply.responseBody);
+            const cookies = [];
+            Object.keys(response).forEach(key => {
+                cookies.push(`${key}=${response[key]}; HttpOnly`);
+            })
+            r.headersOut["Set-Cookie"] = cookies;
+            //end
+
+            r.return(status, "Done!"); //reply.responseBody
         })
     } else {
         r.return(400);
