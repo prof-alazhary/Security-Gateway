@@ -6,7 +6,7 @@
 
 ## Feature Keys
 
-- Docker file that holds the [Nginx](https://hub.docker.com/_/nginx) and [njs](https://github.com/nginx/njs-examples) Modules installaion.
+- Docker file that holds the [Nginx](https://hub.docker.com/_/nginx) and [njs](https://github.com/nginx/njs) Modules installaion.
 - Nginx config `nginx.cong` file ready to use.
 - njs applications/examples inside the `jsCode.js` that holds the javascript code would be used to achieve our POC.
 - Exposing 2 Nginx servers (`security_gateway` & `apix_server`) that allow us to apply the functionality that we've implemented.
@@ -23,6 +23,11 @@
 We will explain the `token/Cookie` exchange process through the security gateway, Using the njs module as a scripting langate to facilitate and allow us to manipulate the request/response by writing some `javascript` functions/callbacks to handle a certain `Nginx` location/API.
 
 > covertTokenToCookie
+
+By the Postman App, you can perform the following API call :-
+```
+POST localhost:8086/token
+```
 
 nginx.conf:
 ```config
@@ -64,6 +69,11 @@ function covertTokenToCookie(r) {
 ```
 -------------
 > covertCookieToToken
+
+By the Postman App, you can perform the following API call :-
+```
+POST localhost:8086/agent_token
+```
 
 Here we will explain the opposite of the prev. example.
 nginx.conf:
