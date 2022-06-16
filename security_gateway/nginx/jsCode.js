@@ -25,6 +25,7 @@ function covertTokenToCookie(r) {
     r.log(`r.variables.args is : ${r.variables.args}`)
     const body = r.requestBody;
     r.log(`r.requestBody is : ${body}`)
+    r.variables['auth'] = "azharyyyyyy";
 
     r.subrequest("/token_proxy", { method: "POST", args: r.variables.args },
         function (reply) {
