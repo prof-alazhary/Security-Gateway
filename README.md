@@ -7,7 +7,7 @@
 ## Feature Keys
 
 - Docker file that holds the [Nginx](https://hub.docker.com/_/nginx) and [njs](https://github.com/nginx/njs) Modules installaion.
-- Nginx config `nginx.cong` file ready to use.
+- Nginx config `nginx.conf` file ready to use.
 - njs applications/examples inside the `jsCode.js` that holds the javascript code would be used to achieve our POC.
 - Exposing 2 Nginx servers (`security_gateway` & `apix_server`) that allow us to apply the functionality that we've implemented.
 - docker-compose to facilitate the development process.
