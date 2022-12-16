@@ -1,4 +1,4 @@
-#  Security Gatway POC:-
+#   Security Gateway POC:-
 
 ##### This is a POC that demonstrates the Security Gateway solution to provide a layer on the front of the Client-side, to apply some security requirements for the Front End APP. in terms of communicating with any API "HTTP calls". 
 
@@ -20,7 +20,7 @@
 
 ## Use Case
 - Token/Cookie exchange:
-We will explain the `token/Cookie` exchange process through the security gateway, Using the njs module as a scripting langate to facilitate and allow us to manipulate the request/response by writing some `javascript` functions/callbacks to handle a certain `Nginx` location/API.
+We will explain the `token/Cookie` exchange process through the security gateway, Using the njs module as a scripting language to facilitate and allow us to manipulate the request/response by writing some `javascript` functions/callbacks to handle a certain `Nginx` location/API.
 
 > covertTokenToCookie
 
@@ -93,7 +93,7 @@ nginx.conf:
             proxy_ssl_server_name on;
         }
 ```
-Also, we used the `js_content` Directive and passes the handler `covertCookieToToken` to it. So that we can cmanipulate the `/agent_token` request. by extracting the Cookies header, then adding them as a request body for the `agent_token_proxy` API.
+Also, we used the `js_content` Directive and passes the handler `covertCookieToToken` to it. So that we can manipulate the `/agent_token` request. by extracting the Cookies header, then adding them as a request body for the `agent_token_proxy` API.
 
 jsCode.js:
 ```javascript
