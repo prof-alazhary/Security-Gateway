@@ -9,7 +9,7 @@
 - Docker file that holds the [Nginx](https://hub.docker.com/_/nginx) and [njs](https://github.com/nginx/njs) Modules installation.
 - Nginx config `nginx.conf` file ready to use.
 - njs applications/examples inside the `jsCode.js` that contains the javascript code would be used to achieve our POC.
-- Exposing 2 Nginx servers (`security_gateway` & `apix_server`) that allow us to apply the functionality that we've implemented.
+- Exposing 2 Nginx servers (`security_gateway` & `3rd_party_server`) that allow us to apply the functionality that we've implemented.
 - docker-compose to facilitate the development process.
 
 ## RUN & Get Started
@@ -39,7 +39,7 @@ nginx.conf:
         }
 
         location /token_proxy {
-            proxy_pass   http://apix_server:8087/token;
+            proxy_pass   http://3rd_party_server:8087/token;
             proxy_ssl_server_name on;
         }
 ```
@@ -89,7 +89,7 @@ nginx.conf:
             if ($request_method != 'POST'){
              return 403;
             }
-            proxy_pass http://apix_server:8087/agent_token;
+            proxy_pass http://3rd_party_server:8087/agent_token;
             proxy_ssl_server_name on;
         }
 ```
