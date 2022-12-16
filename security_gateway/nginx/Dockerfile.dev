@@ -1,14 +1,5 @@
-# FROM nginx
-# COPY ./rawheader_logging.conf /etc/nginx/conf.d/default.conf
-# CMD ["nginx", "-g", "daemon off;"]
-# FROM fabiocicerchia/nginx-lua
-# FROM kareemelkasaby/azhry:2.0
-# FROM soulteary/docker-njs:0.7.0
-# FROM kareemelkasaby/azhary:v3
 FROM nginx
 EXPOSE 8086
 # RUN nginx -v
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY jsCode.js /etc/nginx/jsCode.js
-
-# CMD [ nginx-debug, '-g', 'daemon off;' ] why not works inside the Docker file ???

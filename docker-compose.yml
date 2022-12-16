@@ -1,6 +1,6 @@
 version: "3"
 networks:
-  vf-uk-configuration-portal:
+  my-nwtwoek:
     driver: bridge
 services:
   security_gateway:
@@ -13,7 +13,7 @@ services:
       - "8086:8086"
     # command: [ nginx-debug, '-g', 'daemon off;' ]
     networks:
-      - vf-uk-configuration-portal
+      - my-nwtwoek
   apix_server:
     # restart: always
     build:
@@ -24,4 +24,4 @@ services:
       - "8087:8087"
     # command: [ nginx-debug, '-g', 'daemon off;' ]
     networks:
-      - vf-uk-configuration-portal
+      - my-nwtwoek
