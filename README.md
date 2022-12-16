@@ -1,6 +1,6 @@
 #   Security Gateway POC:-
 
-##### This is a POC that demonstrates the Security Gateway solution to provide a layer on the front of the Client-side, to apply some security requirements for the Front End APP. in terms of communicating with any API "HTTP calls". 
+##### This is a POC that demonstrates A solution to provide a layer on the front of the Client-side (placed within an API Gateway), to apply some security requirements for the Front End App to be more secure. in terms of communicating with any 3rd Party API. 
 
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
