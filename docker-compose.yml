@@ -14,12 +14,12 @@ services:
     # command: [ nginx-debug, '-g', 'daemon off;' ]
     networks:
       - my-nwtwoek
-  3rd_party_server:
+  backend_side:
     # restart: always
     build:
       dockerfile: Dockerfile
       # dockerfile: Dockerfile.dev
-      context: ./3rd_party_server/nginx
+      context: ./backend_side/nginx
     ports:
       - "8087:8087"
     # command: [ nginx-debug, '-g', 'daemon off;' ]
