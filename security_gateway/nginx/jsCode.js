@@ -27,7 +27,7 @@ function covertTokenToCookie(r) {
     r.log(`r.requestBody is : ${body}`)
     r.variables['auth'] = "azharyyyyyy";
 
-    r.subrequest("/token_proxy", { method: "POST", args: r.variables.args },
+    r.subrequest("/login_proxy", { method: "POST", args: r.variables.args },
         function (reply) {
             var status = reply.status;
             r.log(`status is ${status}`)
@@ -53,19 +53,9 @@ function covertCookieToToken(r) {
     if (cookies) {
         var body = JSON.stringify(parseCookiesToJSON(cookies));
         r.log(`body is --->${typeof body} , ${body}`);
-        r.subrequest("/agent_token_proxy", { method: "POST", body }, function (reply) {
+        r.subrequest("/backend_api_proxy", { method: "POST", body }, function (reply) {
             var status = reply.status;
-
-            //start converting the response To Cookies...
-            var response = JSON.parse(reply.responseBody);
-            const cookies = [];
-            Object.keys(response).forEach(key => {
-                cookies.push(`${key}=${response[key]}; HttpOnly`);
-            })
-            r.headersOut["Set-Cookie"] = cookies;
-            //end
-
-            r.return(status, "Done!"); //reply.responseBody
+            r.return(status, reply.responseBody); //reply.responseBody
         })
     } else {
         r.return(400);

@@ -7,14 +7,14 @@ function logsFormate(r) {
 }
 
 function middleware(r) {
-    r.log('inside middleware-->')
+    r.log('this middleware made for debugging/logging purposes-->')
     r.log(`uri is : ${r.uri}`)
     r.log(`r.variables.request_uri is : ${r.variables.request_uri}`)
     r.log(`r.variables.args is : ${r.variables.args}`)
     const body = r.requestBody;
     r.log(`r.requestBody is : ${body}`)
 
-    r.subrequest("/real_agent_token", { method: "POST", body },
+    r.subrequest("/real_api_endpoint", { method: "POST", body },
         function (reply) {
             var status = reply.status;
             r.log(`status is ${status}`)
