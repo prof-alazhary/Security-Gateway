@@ -11,6 +11,7 @@ function middleware(r) {
     r.log(`uri is : ${r.uri}`)
     r.log(`r.variables.request_uri is : ${r.variables.request_uri}`)
     r.log(`r.variables.args is : ${r.variables.args}`)
+    r.log(`r.headersIn["Authorization] is : ${r.headersIn["Authorization"]}`)
     const body = r.requestBody;
     r.log(`r.requestBody is : ${body}`)
 

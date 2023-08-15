@@ -18,14 +18,13 @@ function parseCookiesToJSON(cookies) {
     return obj;
 }
 
-function covertTokenToCookie(r) {
-    r.log('---inside covertTokenToCookie||||----')
+function encapsulateTokenInCookie(r) {
+    r.log('---inside encapsulateTokenInCookie||||----')
     r.log(`uri is : ${r.uri}`)
     r.log(`r.variables.request_uri is : ${r.variables.request_uri}`)
     r.log(`r.variables.args is : ${r.variables.args}`)
     const body = r.requestBody;
     r.log(`r.requestBody is : ${body}`)
-    r.variables['auth'] = "azharyyyyyy";
 
     r.subrequest("/login_proxy", { method: "POST", args: r.variables.args },
         function (reply) {
@@ -51,9 +50,10 @@ function covertCookieToToken(r) {
     var cookies = r.headersIn["Cookie"]; //r.requestBody
 
     if (cookies) {
-        var body = JSON.stringify(parseCookiesToJSON(cookies));
-        r.log(`body is --->${typeof body} , ${body}`);
-        r.subrequest("/backend_api_proxy", { method: "POST", body }, function (reply) {
+        var body = parseCookiesToJSON(cookies);
+        r.log(`body.token is ---> ${body.token}`);
+        r.variables['auth'] = body.token;
+        r.subrequest("/backend_api_proxy", { method: "POST" }, function (reply) {
             var status = reply.status;
             r.return(status, reply.responseBody); //reply.responseBody
         })
@@ -63,4 +63,4 @@ function covertCookieToToken(r) {
 
 }
 
-export default { logsFormate, covertTokenToCookie, covertCookieToToken }
+export default { logsFormate, encapsulateTokenInCookie, covertCookieToToken }
