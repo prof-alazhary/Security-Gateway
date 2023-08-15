@@ -46,7 +46,7 @@ function encapsulateTokenInCookie(r) {
     );
 }
 
-function covertCookieToToken(r) {
+function extractTokenFromCookie(r) {
     var cookies = r.headersIn["Cookie"]; //r.requestBody
 
     if (cookies) {
@@ -63,4 +63,4 @@ function covertCookieToToken(r) {
 
 }
 
-export default { logsFormate, encapsulateTokenInCookie, covertCookieToToken }
+export default { logsFormate, encapsulateTokenInCookie, extractTokenFromCookie }
