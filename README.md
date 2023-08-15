@@ -20,41 +20,42 @@
 
 ## Use Case
 - Token/Cookie exchange:
-We will explain the `token/Cookie` exchange process through the security gateway, Using the njs module as a scripting language to facilitate and allow us to manipulate the request/response by writing some `javascript` functions/callbacks to handle a certain `Nginx` location/API.
+We will explain the `token/Cookie` exchange/encapsulation process through the security gateway, Using the njs module as a scripting language to facilitate and allow us to manipulate the request/response by writing some `javascript` functions/callbacks to handle a certain `Nginx` location/API.
 
-> covertTokenToCookie
+> encapsulateTokenInCookie
 
 By the Postman App, you can perform the following API call :-
 ```
 POST localhost:8086/token
 ```
 
-nginx.conf:
+default.conf:
 ```config
-        location /token{
+        location /login{
             if ($request_method != 'POST'){
              return 405;
              }
-            js_content jsCode.covertTokenToCookie;
+            js_content jsCode.encapsulateTokenInCookie;
         }
 
-        location /token_proxy {
-            proxy_pass   http://backend_side:8087/token;
+        location /login_proxy {
+            proxy_set_header Authorization "$auth";
+            proxy_pass   http://backend_side:8087/login;
             proxy_ssl_server_name on;
         }
 ```
-As you can see, we used the `js_content` Directive from the [ngx_http_js_module](https://nginx.org/en/docs/http/ngx_http_js_module.html#directives). and pass the handler `covertTokenToCookie` to it. So that we can control/manipulate the `/token_proxy` response. by extracting the response body, then adding its fields as Cookies for the same response.
+As you can see, we used the `js_content` Directive from the [ngx_http_js_module](https://nginx.org/en/docs/http/ngx_http_js_module.html#directives). and pass the handler `encapsulateTokenInCookie` to it. So that we can control/manipulate the `/login_proxy` response. by extracting the response body, then adding its fields as Cookies for the same response.
 jsCode.js:
 ```javascript
-function covertTokenToCookie(r) {
-    r.subrequest("/token_proxy", { method: "POST" },
+function encapsulateTokenInCookie(r) {
+    r.subrequest("/login_proxy", { method: "POST", args: r.variables.args },
         function (reply) {
             var status = reply.status;
+            r.log(`status is ${status}`)
             if (status) {
-                r.log('---debugging||||----')
                 ngx.log(ngx.INFO, reply.responseBody)
                 var response = JSON.parse(reply.responseBody);
-                var cookies = [];
+                const cookies = [];
                 Object.keys(response).forEach(key => {
                     cookies.push(`${key}=${response[key]}; HttpOnly`);
                 })
@@ -68,47 +69,44 @@ function covertTokenToCookie(r) {
 }
 ```
 -------------
-> covertCookieToToken
+> extractTokenFromCookie
 
 By the Postman App, you can perform the following API call :-
 ```
-POST localhost:8086/agent_token
+POST localhost:8086/api
 ```
 
 Here we will explain the opposite of the prev. example.
-nginx.conf:
+default.conf:
 ```config
-        location /agent_token{
-            if ($request_method != 'POST'){
-             return 403;
-            }
-            js_content jsCode.covertCookieToToken;
+        location /api{
+            js_content jsCode.extractTokenFromCookie;
         }
 
-       location /agent_token_proxy{
-            if ($request_method != 'POST'){
-             return 403;
-            }
-            proxy_pass http://backend_side:8087/agent_token;
+       location /backend_api_proxy{
+            proxy_set_header Authorization "$auth";
+            proxy_pass http://backend_side:8087/api;
             proxy_ssl_server_name on;
         }
 ```
-Also, we used the `js_content` Directive and passes the handler `covertCookieToToken` to it. So that we can manipulate the `/agent_token` request. by extracting the Cookies header, then adding them as a request body for the `agent_token_proxy` API.
+Also, we used the `js_content` Directive and passes the handler `extractTokenFromCookie` to it. So that we can manipulate the `/api` request. by extracting the Cookies header, then adding it as an Authorization header for the `backend_api_proxy` API.
 
 jsCode.js:
 ```javascript
-function covertCookieToToken(r) {
+function extractTokenFromCookie(r) {
     var cookies = r.headersIn["Cookie"]; //r.requestBody
     if (cookies) {
-        var body = JSON.stringify(parseCookiesToJSON(cookies));
-        r.log(`body is --->${typeof body} , ${body}`);
-        r.subrequest("/agent_token_proxy", { method: "POST", body }, function (reply) {
+        var body = parseCookiesToJSON(cookies);
+        r.log(`body.token is ---> ${body.token}`);
+        r.variables['auth'] = body.token;
+        r.subrequest("/backend_api_proxy", { method: "POST" }, function (reply) {
             var status = reply.status;
-            r.return(status, reply.responseBody);
+            r.return(status, reply.responseBody); //reply.responseBody
         })
     } else {
         r.return(400);
     }
+
 }
 ```
 ## test WIP bot. test
