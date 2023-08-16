@@ -7,10 +7,10 @@
 ## Feature Keys
 
 - Docker file that holds the [Nginx](https://hub.docker.com/_/nginx) and [njs](https://github.com/nginx/njs) Modules installation.
-- Nginx config `nginx.conf` file ready to use.
+- Nginx configurations (`nginx.conf` for backend server - `default.conf` for security gateway server)file ready to use.
 - njs applications/examples inside the `jsCode.js` that contains the javascript code would be used to achieve our POC.
 - Exposing 2 Nginx servers (`security_gateway` & `backend_side`) that allow us to apply the functionality that we've implemented.
-- docker-compose to facilitate the development process.
+- docker-compose to facilitate the environment for development.
 
 ## RUN & Get Started
 
@@ -44,7 +44,7 @@ default.conf:
             proxy_ssl_server_name on;
         }
 ```
-As you can see, we used the `js_content` Directive from the [ngx_http_js_module](https://nginx.org/en/docs/http/ngx_http_js_module.html#directives). and pass the handler `encapsulateTokenInCookie` to it. So that we can control/manipulate the `/login_proxy` response. by extracting the response body, then adding its fields as Cookies for the same response.
+As you can see, we used the `js_content` Directive from the [ngx_http_js_module](https://nginx.org/en/docs/http/ngx_http_js_module.html#directives). and pass the handler `encapsulateTokenInCookie` to it. So that we can control/manipulate the `/login_proxy` response. by extracting the response body, then adding its all body data -for example- as an HTTP only Cookies for the same response.
 jsCode.js:
 ```javascript
 function encapsulateTokenInCookie(r) {
@@ -94,19 +94,18 @@ Also, we used the `js_content` Directive and passes the handler `extractTokenFro
 jsCode.js:
 ```javascript
 function extractTokenFromCookie(r) {
-    var cookies = r.headersIn["Cookie"]; //r.requestBody
+    var cookies = r.headersIn["Cookie"];
     if (cookies) {
         var body = parseCookiesToJSON(cookies);
         r.log(`body.token is ---> ${body.token}`);
-        r.variables['auth'] = body.token;
+        r.variables['auth'] = `Bearer ${body.token}`;
         r.subrequest("/backend_api_proxy", { method: "POST" }, function (reply) {
             var status = reply.status;
-            r.return(status, reply.responseBody); //reply.responseBody
+            r.return(status, reply.responseBody);
         })
     } else {
         r.return(400);
     }
-
 }
 ```
 ## test WIP bot. test

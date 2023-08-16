@@ -47,20 +47,18 @@ function encapsulateTokenInCookie(r) {
 }
 
 function extractTokenFromCookie(r) {
-    var cookies = r.headersIn["Cookie"]; //r.requestBody
-
+    var cookies = r.headersIn["Cookie"];
     if (cookies) {
         var body = parseCookiesToJSON(cookies);
         r.log(`body.token is ---> ${body.token}`);
-        r.variables['auth'] = body.token;
+        r.variables['auth'] = `Bearer ${body.token}`;
         r.subrequest("/backend_api_proxy", { method: "POST" }, function (reply) {
             var status = reply.status;
-            r.return(status, reply.responseBody); //reply.responseBody
+            r.return(status, reply.responseBody);
         })
     } else {
         r.return(400);
     }
-
 }
 
 export default { logsFormate, encapsulateTokenInCookie, extractTokenFromCookie }
