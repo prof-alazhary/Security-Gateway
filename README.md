@@ -39,7 +39,6 @@ default.conf:
         }
 
         location /login_proxy {
-            proxy_set_header Authorization "$auth";
             proxy_pass   http://backend_side:8087/login;
             proxy_ssl_server_name on;
         }
@@ -89,7 +88,7 @@ default.conf:
             proxy_ssl_server_name on;
         }
 ```
-Also, we used the `js_content` Directive and passes the handler `extractTokenFromCookie` to it. So that we can manipulate the `/api` request. by extracting the Cookies header, then adding it as an Authorization header for the `backend_api_proxy` API.
+Also, we used the `js_content` Directive and passes the handler `extractTokenFromCookie` to it. So that we can manipulate the `/api` request. by extracting the Cookies header, then adding it as an Authorization header for the `backend_api_proxy` API using `proxy_set_header` Directive, after binding its value from `extractTokenFromCookie` handler through `$auth`variable by `r.variables['auth']`.
 
 jsCode.js:
 ```javascript
