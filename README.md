@@ -26,7 +26,7 @@ We will explain the `token/Cookie` exchange/encapsulation process through the se
 
 By the Postman App, you can perform the following API call :-
 ```
-POST localhost:8086/token
+POST localhost:8086/login
 ```
 
 default.conf:
