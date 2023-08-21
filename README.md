@@ -6,7 +6,7 @@
 
 ## Feature Keys
 
-- Docker file that holds the [Nginx](https://hub.docker.com/_/nginx) and [njs](https://github.com/nginx/njs) Modules installation.
+- Docker file that holds the [Nginx](https://hub.docker.com/_/nginx) and [njs](https://github.com/nginx/njs) Modules installation. (special THANKS to my friend [Kareem](https://github.com/kareemelkasaby1) for supporting with this Doker file preparation)
 - Nginx configurations (`nginx.conf` for backend server - `default.conf` for security gateway server)file ready to use.
 - njs applications/examples inside the `jsCode.js` that contains the javascript code would be used to achieve our POC.
 - Exposing 2 Nginx servers (`security_gateway` & `backend_side`) that allow us to apply the functionality that we've implemented.
